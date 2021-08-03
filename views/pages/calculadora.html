@@ -16,10 +16,14 @@
             width: 180px;
             height: 30px;
         }
+        pre{
+            position: relative;
+            left: 70%;
+        }
     </style>
   </head>
   <body onkeypress="manipularTeclado()">
-      <table align="center">
+      <table align="center" border="3px">
           <tr>
               <td colspan="6"><input type="text" id="display" value="0" disabled></td>
           </tr>
@@ -48,6 +52,7 @@
             <td><input type="button" value="/" onclick="atualizarOperacao(this)" /></td>
         </tr>
       </table>
+      <pre id="historico"></pre>
       <script>
         function atualizarDisplay(btn){
             const display = document.getElementById('display');
@@ -72,8 +77,12 @@
         function calcularOperacao(){
             const display = document.getElementById('display');
             const valor2 = parseInt(display.value);
-            valor1 = eval(valor1+operador+valor2);
-            display.value = valor1;
+            const outHistorico = document.getElementById("historico");
+            var textoHistorico = ""
+            resultado = eval(valor1+operador+valor2);
+            display.value = resultado;
+            textoHistorico = valor1 + " " + operador + " " + valor2 + " = " + resultado + "\n";
+            outHistorico.textContent += textoHistorico;
             operador = '';
         }       
 
