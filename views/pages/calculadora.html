@@ -25,13 +25,14 @@
   <body onkeypress="manipularTeclado()">
       <table align="center" border="3px">
           <tr>
-              <td colspan="6"><input type="text" id="display" value="0" disabled></td>
+              <td colspan="6"><input type="text" id="display" value="" disabled></td>
           </tr>
           <tr>
             <td><input type="button" value="7" onclick="atualizarDisplay(this)" /></td>
             <td><input type="button" value="8" onclick="atualizarDisplay(this)" /></td>
             <td><input type="button" value="9" onclick="atualizarDisplay(this)" /></td>
             <td><input type="button" value="*" onclick="atualizarOperacao(this)" /></td>
+            <td><input type="button" value="√" onclick="atualizarOperacao(this)" /></td>
         </tr>
         <tr>
             <td><input type="button" value="4" onclick="atualizarDisplay(this)" /></td>
@@ -71,17 +72,28 @@
             const display = document.getElementById('display');
             operador = btn.value;
             valor1 = parseInt(display.value);
-            display.value = '0';
+            if(btn.value == "√"){
+                display.value = "√";
+            }
+            else
+                display.value = '0';
         }
 
         function calcularOperacao(){
             const display = document.getElementById('display');
-            const valor2 = parseInt(display.value);
+            const valor2 = parseInt(display.value.replace("√", ""));
             const outHistorico = document.getElementById("historico");
             var textoHistorico = ""
-            resultado = eval(valor1+operador+valor2);
+            var resultado;
+            if(operador == "√"){
+                resultado = Math.sqrt(parseFloat(valor2));
+                textoHistorico = "√" + valor2 + " = " + resultado;
+            }
+            else{
+                resultado = eval(valor1+operador+parseFloat(valor2));
+                textoHistorico = valor1 + " " + operador + " " + valor2 + " = " + resultado + "\n";
+            }
             display.value = resultado;
-            textoHistorico = valor1 + " " + operador + " " + valor2 + " = " + resultado + "\n";
             outHistorico.textContent += textoHistorico;
             operador = '';
         }       
