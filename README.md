@@ -3,6 +3,8 @@ Versão de exemplo de uma calculadora.
 
 Nomes:
  Nayara Lopes Silva
+ Isaque
+ Michael
  
 Heroku:
  https://my-calc-nayara.herokuapp.com

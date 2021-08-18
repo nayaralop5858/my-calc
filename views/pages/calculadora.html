@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Calculadora</title>
+  <meta charset="utf-8" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .fundo {
+      background-image: linear-gradient(70deg, black, white);
+      height: 100vw;
+
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+    }
+
+    .calculadora {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background-color: rgba(0, 0, 0, 0.8);
+      transform: translate(-50%, -50%);
+      border-radius: 15px;
+      padding: 15px;
+
+    }
+
+    .botao {
+      width: 40px;
+      height: 45px;
+      cursor: pointer;
+      margin: 4px;
+      background-color: #00A4CD;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .botaosolo {
+      cursor: pointer;
+      background-color: #E32636;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      margin: 4px;
+      width: 40px;
+      height: 45px;
+
+    }
+
+    input[type=text] {
+      width: 235px;
+      height: 30px;
+      margin: 5px;
+      font-size: 25px;
+      color: black;
+      text-align: right;
+      padding: 5px;
+    }
+
+    pre {
+      position: relative;
+      left: 1%;
+    }
+    .historico{
+        position: absolute;
+        top: 165px;
+        width: 200px;
+        height: 340px;
+        background-color: rgb(156, 156, 156);
+        border: 3px solid #000;
+        border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body onkeypress="manipularTeclado()">
+  <div class="fundo">
+    <h1>Isaque, Nayara, Michael.</h1>
+    <div class="calculadora">
+      <h1>Calculadora</h1>
+      <table>
+        <tr>
+          <td colspan="6"><input type="text" id="display" value="0" disabled></td>
+        </tr>
+        <tr>
+          <td><input class="botao" type="button" value="C" onclick="limparDisplay()" /></td>
+          <td><input class="botao" type="button" value="(" onclick="atualizarDisplay(this)"</td>
+          <td><input class="botao" type="button" value=")" onclick="atualizarDisplay(this)"</td>
+          <td><input class="botao" type="button" value="%" onclick="atualizarOperacao(this)" /></td>
+          <td><input class="botao" style="background-color: rgb(255, 185, 185);" type="button" value="<" onclick="apagarUltimoCaracter(this)" /></td>
+        </tr>
+        <tr>
+          <td><button class="botao" value="7" onclick="atualizarDisplay(this)">7</button></td>
+          <td><button class="botao" value="8" onclick="atualizarDisplay(this)">8</button></td>
+          <td><button class="botao" value="9" onclick="atualizarDisplay(this)">9</button></td>
+          <td><button class="botao" value="*" onclick="atualizarDisplay(this)">X</button></td>
+          <td><button class="botao" value="√" onclick="atualizarOperacao(this)">√</button></td>
+        </tr>
+        <tr>
+          <td><button class="botao" value="4" onclick="atualizarDisplay(this)">4</button></td>
+          <td><button class="botao" value="5" onclick="atualizarDisplay(this)">5</button></td>
+          <td><button class="botao" value="6" onclick="atualizarDisplay(this)">6</button></td>
+          <td><button class="botao" value="-" onclick="atualizarDisplay(this)">-</button></td>
+          <td><button class="botao" value="x²" onclick="atualizarOperacao(this)" >x²</button></td>
+        </tr>
+        <tr>
+          <td><button class="botao" value="1" onclick="atualizarDisplay(this)">1</button></td>
+          <td><button class="botao" value="2" onclick="atualizarDisplay(this)">2</button></td>
+          <td><button class="botao" value="3" onclick="atualizarDisplay(this)">3</button></td>
+          <td><button class="botao" value="+" onclick="atualizarDisplay(this)">+</button></td>
+          <td rowspan="2"><input class="botaosolo" type="button" value="=" style="background-color:rgb(135, 126, 255); height: 95px;" onclick="calcularOperacao()" /></td>
+        </tr>
+        <tr>
+          <td colspan="2"><input class="botao" style="width: 85px;" type="button" value="0" onclick="atualizarDisplay(this)" /></td>
+          <td><button class="botao" value="." onclick="atualizarDisplay()">.</button></td>
+          <td><button class="botao" value="/" onclick="atualizarDisplay(this)">/</button></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="historico" border="3px" align="center">
+    <input style="text-align: center; border-top-left-radius: 5px;" value="HISTORICO" disabled/>
+    <input type="button" value="x" onclick="limparHistorico()" style="background-color: red; width: 20px; height: 18px; border: none; border-radius: 5px;" /> 
+    <pre id="historicoCalc"></pre>
+  </div>
+  <script>
+    function atualizarDisplay(btn) {
+      const display = document.getElementById('display');
+      if (display.value.length === 9) return;
+      else if (btn.value == ".") display.value += btn.value;
+      else if (display.value === '0') display.value = btn.value;
+      else display.value += btn.value;
+    }
+
+    function limparDisplay() {
+      document.getElementById('display').value = '0';
+    }
+
+    var operador = ''
+    var valor1 = 0
+    function atualizarOperacao(btn){
+            const display = document.getElementById('display');
+            operador = btn.value;
+            valor1 = display.value;
+            console.log(typeof valor1);
+            console.log(valor1.length);
+            if(btn.value == "√"){
+                display.value = "√";
+                valor1 = '';
+            }
+            else if(btn.value == "%"){
+                display.value += "%"
+            }
+            else if(btn.value == "x²"){
+                display.value += "^(2)";
+            }
+            else
+                display.value = '0';
+        }
+
+
+    function calcularOperacao(){
+            const display = document.getElementById('display');
+            const outHistorico = document.getElementById("historicoCalc");
+            var valor2 = display.value;
+            var textoHistorico = ""
+            var resultado;
+            if(operador == "√"){
+                valor2 = valor2.substring(valor1.length + 1, display.value.length);
+                resultado = Math.sqrt(valor2);
+                textoHistorico = "√" + valor2 + " = " + resultado + "\n";
+            }
+            else if(operador == "%"){
+                valor2 = valor2.substring(valor1.length + 1, display.value.length);
+                resultado = eval(valor2 * (parseFloat(valor1) / 100));
+                textoHistorico = display.value + " = " + resultado + "\n";
+            }
+            else if(operador == "x²"){
+                resultado = eval(valor1 * valor1);
+                textoHistorico = valor1 + "² = " + resultado + "\n";
+            }
+            else{
+                resultado = eval(display.value);
+                textoHistorico = display.value + " = " + resultado + "\n";
+            }
+            display.value = resultado;
+            outHistorico.textContent += textoHistorico;
+            operador = '';
+        } 
+
+    function apagarUltimoCaracter(){
+        const display = document.getElementById('display');
+        if(display.value != "0"){
+            display.value = display.value.substring(0, display.value.length - 1);
+            if(display.value.length == 0){
+                display.value = "0"
+            }
+        }
+    }
+
+    function limparHistorico(){
+      const outHistorico = document.getElementById("historicoCalc");
+      outHistorico.textContent = "";
+    }
+
+    function manipularTeclado() {
+      if (/[0-9]/.test(event.key))
+        atualizarDisplay({ value: event.key });
+    }
+  </script>
+
+</body>
+
+</html>
